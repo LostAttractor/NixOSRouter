@@ -4,6 +4,7 @@
     ./network/interface
     ./network/dnsmasq.nix
     ./network/nftables.nix
+    ./features/ddns.nix
     ./features/nix.nix
     ./features/fish.nix
     ./user.nix
