@@ -16,13 +16,11 @@
     networks."10-${network.interface.ppp}" = {
       name = network.interface.ppp;
       networkConfig = {
-        IPv6AcceptRA = false;  # DHCP-PD本身就可以拿到地址，我们不需要RA提供的地址...?
         DHCP = "ipv6";  # 需要先接收到 RA 才会尝试 DHCP-PD, 且默认情况下 RA 必须包含 M Flag
         KeepConfiguration = "static";  # 防止清除 PPPD 设置的 IPV4(IPCP) 地址
-        # DHCPPrefixDelegation = true;  # 让当前接口也像 br-lan 一样通过 PD 获得一个地址，但是因为 br-lan 已经有一个地址了，意义不大
+        # DHCPPrefixDelegation = true;  # 让当前接口也像 br-lan 一样通过 PD 获得一个地址
       };
       dhcpV6Config = {
-        UseAddress = false;  # 似乎因为是DHCP-PD, 会一直认为自己拿不到地址
         WithoutRA = "solicit";  # 允许上游 RA 没有 M Flag 时启用 DHCP-PD
         UseDNS = false;
       };
