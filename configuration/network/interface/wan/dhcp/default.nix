@@ -1,0 +1,37 @@
+{ network, ... }:
+{
+  systemd.network = {
+    networks."10-${network.interface.wan}" = {
+      name = network.interface.wan;
+      networkConfig = {
+        DHCP = "yes";
+        # DHCPPrefixDelegation = true;  # 让当前接口也像 br-lan 一样通过 PD 获得一个地址
+      };
+      dhcpV6Config = {
+        WithoutRA = "solicit";  # 允许上游 RA 没有 M Flag 时启用 DHCP-PD
+        UseAddress = false;  # 不通过 DHCP 获取地址，或上游只提供前缀，且无法通过其他方法获得地址时也需要
+      };
+      dhcpPrefixDelegationConfig = {  # 声明自己是上行链路，自己就具有 PD
+        UplinkInterface = ":self";
+        SubnetId = 0;
+        Announce = false;
+      };
+    };
+  };
+
+  networking.nftables.ruleset = ''
+    define DEV_WORLD = ${network.interface.wan}
+
+    table inet nat {
+      chain postrouting {
+        type nat hook postrouting priority srcnat; policy accept;
+
+        # Masquerade private IP addresses
+        ip saddr $NET_PRIVATE oifname $DEV_WORLD masquerade
+      }
+    }
+  '';
+  
+  # AUTHORITATIVE SERVER
+  services.dnsmasq.settings.auth-server = "router.lostattractor.net,${network.interface.wan}";
+}
