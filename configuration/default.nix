@@ -23,6 +23,7 @@
     "net.ipv4.tcp_fastopen" = 3;
     # Bufferbloat mitigations + slight improvement in throughput & latency
     "net.ipv4.tcp_congestion_control" = "bbr";
+    ## Queueing discipline
     "net.core.default_qdisc" = "cake";
   };
 
