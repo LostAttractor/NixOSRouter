@@ -40,6 +40,7 @@
     inetutils
     strace
     nmap
+    wireguard-tools
   ];
 
   sops.defaultSopsFile = ../secrets.yaml;
