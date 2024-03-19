@@ -39,7 +39,7 @@ in {
       cname = [
         "binarycache.${domain},hydra.${domain}"
         "qbittorrent.${domain},nextcloud.${domain},emby.${domain},nixnas.${domain}"
-        "portainer.${domain},uptime.${domain},nginx.${domain},grafana.${domain},prometheus.${domain},alist.${domain},memos.${domain},container.${domain}"
+        "portainer.${domain},uptime.${domain},nginx.${domain},grafana.${domain},prometheus.${domain},alist.${domain},memos.${domain},speed.${domain},container.${domain}"
       ];
       # AUTHORITATIVE ZONE
       auth-zone = "${domain}";
