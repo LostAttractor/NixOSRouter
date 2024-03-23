@@ -88,6 +88,9 @@
       dip(geoip:cn) -> direct
       domain(geosite:cn) -> direct
 
+      # Bypass BT
+      dscp(0x4) -> direct
+
       # Proxy
       dip(geoip:hk) -> proxy_hk
       dip(geoip:tw) -> proxy_tw
