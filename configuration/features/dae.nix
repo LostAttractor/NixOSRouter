@@ -81,9 +81,10 @@
       # https://github.com/daeuniverse/dae/issues/474
       # dport(53) && !pname(systemd-resolved) && !pname(dnsmasq) -> must_rules
 
-      ### Write your rules below.
-
+      # Bypass Private IP
       dip(geoip:private) -> direct
+
+      # Bypass CN
       dip(geoip:cn) -> direct
       domain(geosite:cn) -> direct
 
