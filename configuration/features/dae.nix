@@ -47,8 +47,20 @@
     }
 
     group {
-      proxy {
+      proxy_jp {
         filter: name(keyword: 'Japan') && !name(keyword: 'Premium')
+        policy: min_avg10
+      }
+      proxy_hk {
+        filter: name(keyword: 'Hong Kong') && !name(keyword: 'Premium')
+        policy: min_avg10
+      }
+      proxy_tw {
+        filter: name(keyword: 'Taiwan') && !name(keyword: 'Premium')
+        policy: min_avg10
+      }
+      proxy_sg {
+        filter: name(keyword: 'Singapore') && !name(keyword: 'Premium')
         policy: min_avg10
       }
     }
@@ -75,7 +87,12 @@
       dip(geoip:cn) -> direct
       domain(geosite:cn) -> direct
 
-      fallback: proxy
+      # Proxy
+      dip(geoip:hk) -> proxy_hk
+      dip(geoip:tw) -> proxy_tw
+      dip(geoip:sg) -> proxy_sg
+
+      fallback: proxy_jp
     }
   '';
 
