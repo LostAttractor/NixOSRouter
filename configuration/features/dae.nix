@@ -89,21 +89,20 @@
       # https://github.com/daeuniverse/dae/issues/474
       # dport(53) && !pname(systemd-resolved) && !pname(dnsmasq) -> must_rules
 
-      # Bypass Private IP
+      ### Bypass Private IPs
       dip(geoip:private) -> direct
 
+      ### Application-based routing
+      # Block AD
+      domain(geosite:category-ads-all) -> block
       # Bypass DSCP 0x4 (e.g. Bittorrent)
       dscp(0x4) -> direct
 
-      # Block AD
-      domain(geosite:category-ads-all) -> block
-
+      ### Region-based routing
       # Bypass CN
       dip(geoip:cn) -> direct
       domain(geosite:cn) -> direct
 
-      # Bypass BT
-      dscp(0x4) -> direct
 
       # Proxy
       dip(geoip:jp) -> proxy_jp
