@@ -24,26 +24,13 @@
       # domain+:  忽略 SNI 验证, 这使得 DNS 查询可以完全不经由 DAE 处理, 不过这可能导致提供了错误的SNI的情况下无法工作, 如APNS
       # domain++: 忽略 SNI 验证的同时, 并以嗅探到的域名重新进行路由, 带来更好的准确度, 同时也意味着整个过程中，如果域名分流正确工作，可以抵御 DNS 污染
       #           但也带来了更大的性能开销
-      # dial_mode: domain++  # SNI错误?
+      dial_mode: domain++  # SNI错误?
     }
 
     subscription {
       nexitally: '${config.sops.placeholder."dae/subscription/nexitally"}'
       imm: '${config.sops.placeholder."dae/subscription/imm"}'
       cnix: '${config.sops.placeholder."dae/subscription/cnix"}'
-    }
-
-    # See https://github.com/daeuniverse/dae/blob/main/docs/en/configuration/dns.md for full examples.
-    dns {
-      upstream {
-        googledns: 'tcp+udp://dns.google.com:53'
-      }
-      routing {
-        request {
-          qname(geosite:cn) -> asis
-          fallback: googledns
-        }
-      }
     }
 
     group {
@@ -81,14 +68,8 @@
 
     # See https://github.com/daeuniverse/dae/blob/main/docs/en/configuration/routing.md for full examples.
     routing {
-      ### Hijack only DNS queries from dnsmasq
-      # The rules here ensure that DNS traffic can be routed correctly outside of DNS hijacking
-      dport(53) && pname(dnsmasq) && !dip(geoip:private) && !dip(geoip:cn) -> proxy
-      dport(53) && pname(dnsmasq) -> direct
+      ### DO NOT hijack DNS (Client -> DNSMASQ -> MOSDNS -(DOH)-> Upstream)
       dport(53) -> must_rules
-      # TODO: Should be equivalent but doesn't work now
-      # https://github.com/daeuniverse/dae/issues/474
-      # dport(53) && !pname(systemd-resolved) && !pname(dnsmasq) -> must_rules
 
       ### Bypass Private IPs
       dip(geoip:private) -> direct
