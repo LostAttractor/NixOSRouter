@@ -47,6 +47,15 @@
       ];
     };
 
+    # Bootstrap
+    nixosConfigurations."bootstrap" = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./hardware/kvm
+        { networking.hostName = "router"; }
+      ];
+    };
+
     # Deploy-RS Configuration
     deploy = {
       sshUser = "root";
@@ -64,6 +73,9 @@
     hydraJobs = {
       nixosConfigurations = nixpkgs.lib.mapAttrs' (name: config:
         nixpkgs.lib.nameValuePair name config.config.system.build.toplevel)
+        nixosConfigurations;
+      VMA = nixpkgs.lib.mapAttrs' (name: config:
+        nixpkgs.lib.nameValuePair name config.config.system.build.VMA)
         nixosConfigurations;
     };
   };
