@@ -5,16 +5,25 @@
     ./network/dnsmasq.nix
     ./network/mosdns.nix
     ./network/nftables.nix
+    ./network/hosts.nix
     ./features/network/ddns.nix
     ./features/network/miniupnpd.nix
     ./features/network/avahi.nix
+    ./features/network/cloudflared.nix
     ./features/network/tailscale.nix
     ./features/network/dae.nix
+    ./features/network/tor.nix
     ./features/nix.nix
     ./features/fish.nix
     ./features/telemetry.nix
+    ./features/develop.nix
     ./user.nix
   ];
+
+  # services.ntopng = {
+  #   enable = true;
+  #   interfaces = with network.interface; [  upstream downstream lan direct security manage wg tailscale "dae0" ];
+  # };
 
   # /proc/sys/ to should be writeble
   boot.kernel.sysctl = {
@@ -27,6 +36,8 @@
     # both incoming and outgoing connections:
     "net.ipv4.tcp_fastopen" = 3;
     ## Queueing discipline
+    ## https://www.bufferbloat.net/projects/codel/wiki/
+    ## https://www.bufferbloat.net/projects/codel/wiki/Cake/
     "net.core.default_qdisc" = "cake";
     ## UDP Buffersize (https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes)
     "net.core.rmem_max" = 7500000;
@@ -60,8 +71,10 @@
     dnsutils                         # dns tools
     iperf3 speedtest-go cfspeedtest  # speedtest tools
     tcping-go gping mtr trippy       # latency/tracing tools
+    curlHTTP3                        # curl with http3 support
     inetutils                        # telnet
     bridge-utils                     # brctl
+    cloudflared                      # cloudflare zero trust
     nmap
     strace
   ];
