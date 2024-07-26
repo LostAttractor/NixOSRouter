@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   imports = [
     ./network/interface
@@ -7,13 +7,14 @@
     ./network/nftables.nix
     ./features/network/ddns.nix
     ./features/network/miniupnpd.nix
-    ./features/network/avahi.nix
     ./features/network/tailscale.nix
     ./features/network/dae.nix
-    ./features/nix.nix
-    ./features/fish.nix
+    (inputs.homelab + "/features/network/avahi")
+    (inputs.homelab + "/features/nix")
+    (inputs.homelab + "/features/fish.nix")
+    (inputs.homelab + "/features/develop.nix")
+    (inputs.homelab + "/features/telemetry/mdns.nix")
     ./features/telemetry.nix
-    ./features/develop.nix
     ./user.nix
   ];
 
@@ -66,6 +67,17 @@
     nmap
     strace
   ];
+
+  # Remove perl from activation
+  system.etc.overlay.enable = true;
+  # Systemd-sysusers will generate passwd & shadow file when built,
+  # So it's not compatible with sops-nix now since hook its needed is not exist
+  # systemd.sysusers.enable = lib.mkDefault true;
+  # Since using a perl script to generate passwd & shadow file need /etc to be writable, It not working with immutable /etc
+  # Also, immutable /etc causes machine-id and ssh-host-keys to be regenerated every time
+  # system.etc.overlay.mutable = false;
+
+  proxmox.qemuConf.net0 = "";
 
   sops.defaultSopsFile = ../secrets.yaml;
 
