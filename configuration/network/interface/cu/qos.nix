@@ -8,7 +8,7 @@
   systemd.network = {
     networks."10-${interface}" = {
       cakeConfig = {
-        Bandwidth = "105M";
+        Bandwidth = "40M";
         RTTSec = "50ms";
       };
     };
@@ -21,18 +21,14 @@
       networkConfig.LinkLocalAddressing = "no";
       linkConfig.RequiredForOnline = false;
       cakeConfig = {
-        Bandwidth = "1100M";
-        # Bandwidth = "1000M";
-        # OverheadBytes = 50;  # 35 是典型的PON网络开销, 38 是典型的以太网开销, 当前实践可能不应低于 50
+        Bandwidth = "1000M";
+        OverheadBytes = 50;
         RTTSec = "50ms";
       };
     };
   };
 
-  # clsact 和 ingress 互相是排他性的 (Exclusivity)
-  # clsact 是 ingress (和egress)? 加载 bpf 程序的前提
-  # 它们都会有一个句柄, 对于 clsact, 它不会被使用, 因此可以省略
-  services.networkd-dispatcher.rules."10-tc-wan" = {
+  services.networkd-dispatcher.rules."10-tc-cu" = {
     onState = [ "routable" ]; # or configured
     script = ''
       #!${pkgs.runtimeShell}
@@ -45,16 +41,4 @@
       fi
     '';
   };
-
-  # services.networkd-dispatcher.rules."10-tc" = {
-  #   onState = [ "routable" ];
-  #   script = ''
-  #     #!${pkgs.runtimeShell}
-  #     if [[ $IFACE == "${network.interface.upstream}" ]]; then
-  #       # ${pkgs.iproute2}/bin/tc qdisc del dev ${network.interface.upstream} ingress
-  #       ${pkgs.iproute2}/bin/tc qdisc add dev ${network.interface.upstream} handle ffff: ingress
-  #       ${pkgs.iproute2}/bin/tc filter add dev ${network.interface.upstream} parent ffff: matchall action mirred egress redirect dev ifb4${interface}
-  #     fi
-  #   '';
-  # };
 }

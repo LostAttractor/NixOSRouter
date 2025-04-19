@@ -6,6 +6,7 @@ with lib;
   imports = [
     ./vlan.nix
     ./wan/ppp
+    ./cu
     ./br-lan
     ./tor
     ./security
@@ -20,6 +21,7 @@ with lib;
 
   options.network.interface = {
     world = mkOption { type = types.str; };
+    worlds = mkOption { type = with types; listOf str; };
     private = {
       lan = mkOption { type = types.str; };
       tor = mkOption { type = types.str; };

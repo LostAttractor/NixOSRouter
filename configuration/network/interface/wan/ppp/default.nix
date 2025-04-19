@@ -28,4 +28,5 @@
   };
 
   network.interface.world = network.interface.ppp;
+  network.interface.worlds = [ network.interface.ppp ];
 }

@@ -30,8 +30,9 @@
         tor = "tor"; # VLAN 3 on downstream
         security = "security"; # VLAN 10 on downstream
         manage = "manage"; # VLAN 100 on downstream
-        onu = upstream; # Untagged on upstream / VLAN 4094 on downstream
-        ppp = "pppoe-wan"; # PPP on upstream
+        onu = upstream; # Untagged on upstream
+        ppp = "pppoe-wan"; # PPP encap on upstream
+        cu = "cu"; # VLAN 4094 on downstream
         # Bridges
         br-lan = "br-lan";
         # SDN

@@ -1,4 +1,4 @@
-{ network, config, ... }:
+{ network, config, lib, ... }:
 
 with config.network.interface;
 {
@@ -61,16 +61,17 @@ with config.network.interface;
             # Accepting traffic from established and related packets, drop invalid
             ct state vmap { established : accept, related : accept, invalid : drop }
 
-            # any      ->  world:    accept
-            # vpns     <-> lan:      accept
-            # lan/vpns ->  manage:   accept
-            # world    ->  lan/vpns: jump weak_security_zone
-            # any      ->  security: jump strong_security_zone
+            # any      ->  worlds/onu:  accept
+            # vpns     <-> lan:         accept
+            # lan/vpns ->  manage:      accept
+            # worlds   ->  lan/vpns:    jump weak_security_zone
+            # any      ->  security:    jump strong_security_zone
 
-            oifname ${world} accept
+            ${builtins.concatStringsSep "\n" (map (world: "oifname ${world} accept") worlds)}
+            ${lib.optionalString (!builtins.elem network.interface.onu worlds) "oifname ${network.interface.onu} accept"}  # Allow visit ONU for manage purpose if needed
             meta iifname . meta oifname { ${private.lan} . ${private.wg}, ${private.lan} . ${private.tailscale}, ${private.wg} . ${private.lan}, ${private.tailscale} . ${private.lan} } accept
             oifname ${private.manage} iifname vmap { ${private.lan} : accept, ${private.wg} : accept, ${private.tailscale} : accept }
-            iifname ${world} oifname vmap { ${private.lan} : jump weak_security_zone, ${private.wg} : jump weak_security_zone, ${private.tailscale} : jump weak_security_zone }
+            ${builtins.concatStringsSep "\n" (map (world: "iifname ${world} oifname vmap { ${private.lan} : jump weak_security_zone, ${private.wg} : jump weak_security_zone, ${private.tailscale} : jump weak_security_zone }") worlds)}
             oifname ${private.security} jump strong_security_zone
 
             # The rest is dropped by the above policy

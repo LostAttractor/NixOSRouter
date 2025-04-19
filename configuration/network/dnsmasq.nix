@@ -72,7 +72,7 @@ in {
       # 作为权威的范围, 这会使得对应内容变得权威 (+authority), 并且提供 AUTHORITY SECTION (NS记录, 或许也可以是 SOA 记录)
       auth-zone = "${domain},${private.lan}/6,exclude:fc00::/7";
       # 需要注意的是这不能适用于需要作为递归 DNS 服务器的接口, 因为会导致 CNAME 不可用, 此外该接口不需要包括在 interface 中 (否则会进行覆盖)
-      auth-server = "${domain},${world}";
+      auth-server = "${domain},${builtins.concatStringsSep "," worlds}";
       # ADBlock
       conf-file = "${inputs.oisd}/dnsmasq2_big.txt";
     };

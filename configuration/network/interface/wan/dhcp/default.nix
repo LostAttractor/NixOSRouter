@@ -20,4 +20,5 @@
   };
 
   network.interface.world = network.interface.onu;
+  network.interface.worlds = [ network.interface.onu ];
 }

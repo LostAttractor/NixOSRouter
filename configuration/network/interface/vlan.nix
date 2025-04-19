@@ -7,7 +7,7 @@
       name = network.interface.downstream;
       networkConfig = {
         LinkLocalAddressing = "no";
-        VLAN = with network.interface; [ lan direct tor security manage ];
+        VLAN = with network.interface; [ lan direct tor security manage cu ];
       };
       linkConfig = {
         RequiredForOnline = false;
@@ -52,6 +52,14 @@
         Name = network.interface.manage;
       };
       vlanConfig.Id = 100;
+    };
+    # China Unicom
+    netdevs."00-${network.interface.cu}" = {
+      netdevConfig = {
+        Kind = "vlan";
+        Name = network.interface.cu;
+      };
+      vlanConfig.Id = 4094;
     };
   };
 }
