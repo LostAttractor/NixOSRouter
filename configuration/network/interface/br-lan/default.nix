@@ -27,7 +27,10 @@
         IPv6SendRA = true; # 会自动关闭 IPv6AcceptRA 并打开 IPv6Forwarding
       };
       ipv6SendRAConfig = { Managed = true; OtherInformation = true; };
-      dhcpPrefixDelegationConfig.Token = "::1";
+      dhcpPrefixDelegationConfig = {
+        SubnetId = 0;
+        Token = "::1";
+      };
     };
   };
 
