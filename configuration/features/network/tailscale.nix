@@ -1,4 +1,4 @@
-{ network, config, pkgs, ... }:
+{ network, config, ... }:
 {
   services.tailscale = {
     enable = true;
