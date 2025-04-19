@@ -5,8 +5,7 @@ with lib;
   # TODO: Multiple IPv6 SubnetID(Prefix)
   imports = [
     ./vlan.nix
-    ./wan/dhcp
-    ./wan/qos.nix
+    ./wan/ppp
     ./br-lan
     ./tor
     ./security

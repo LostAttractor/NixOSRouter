@@ -17,6 +17,10 @@
 
     usepeerdns
     defaultroute  # v4默认路由
+
+    persist
+    holdoff 10
+    maxfail 0
   '';
 
   sops.secrets."network/pppoe/name" = {};
