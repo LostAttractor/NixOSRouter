@@ -10,11 +10,11 @@
         # Domain/IP set
         {
           tag = "ads"; type = "domain_set";
-          args.files = [ "${inputs.oisd}/domainswild2_big.txt"];
+          args.files = [ "/tmp/oisd/domainswild2_big.txt"];
         }
         {
           tag = "geosite-cn"; type = "domain_set";
-          args.files = [ "${pkgs.mosdns-geosite}/geosite_cn.txt" ];
+          args.files = [ "/tmp/v2ray/geosite_cn.txt" ];
         }
         {
           tag = "geosite-geolocation-!cn"; type = "domain_set";

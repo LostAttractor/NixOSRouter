@@ -1,4 +1,4 @@
-{ inputs, config, network, ... }:
+{ config, network, ... }:
 # https://openwrt.org/docs/guide-user/base-system/dhcp
 # https://thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html
 let
@@ -74,7 +74,7 @@ in {
       # 需要注意的是这不能适用于需要作为递归 DNS 服务器的接口, 因为会导致 CNAME 不可用, 此外该接口不需要包括在 interface 中 (否则会进行覆盖)
       auth-server = "${domain},${builtins.concatStringsSep "," worlds}";
       # ADBlock
-      conf-file = "${inputs.oisd}/dnsmasq2_big.txt";
+      conf-file = "/tmp/oisd/dnsmasq2_big.txt";
     };
   };
 

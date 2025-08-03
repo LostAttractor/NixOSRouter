@@ -1,6 +1,7 @@
 { pkgs, inputs, ... }:
 {
   imports = [
+    ./resource.nix
     ./network/interface
     ./network/dnsmasq.nix
     ./network/mosdns.nix
