@@ -62,9 +62,9 @@ in {
       # CNAME
       cname = [
         "binarycache.${domain},hydra.${domain}"
-        "qbittorrent.${domain},emby.${domain},jellyfin.${domain},immich.${domain},ipfs.${domain},api.ipfs.${domain},syncthing.${domain},nas.${domain}"
+        "qbittorrent.${domain},emby.${domain},jellyfin.${domain},immich.${domain},ipfs.${domain},api.ipfs.${domain},syncthing.${domain},minio.${domain},console.minio.${domain},attic.${domain},nas.${domain}"
         # "qbittorrent.legceynas.${domain},emby.legceynas.${domain},immich.legceynas.${domain},ipfs.legceynas.${domain},api.ipfs.legceynas.${domain},syncthing.legceynas.${domain},nixnas.${domain}"
-        "authentik.${domain},vaultwarden.${domain},argocd.${domain},hubble.${domain},portainer.${domain},memos.${domain},pdf.${domain},longhorn.${domain},grafana.${domain},uptime.${domain},prometheus.${domain},loki.${domain},node0-rke.${domain}"
+        "authentik.${domain},vaultwarden.${domain},argocd.${domain},hubble.${domain},portainer.${domain},memos.${domain},pdf.${domain},longhorn.${domain},grafana.${domain},uptime.${domain},prometheus.${domain},alertmanager.${domain},loki.${domain},thelounge.${domain},node0-rke.${domain}"
         "zabbix.${domain},metrics.${domain}"
         "rancher.${domain},harvester.${domain}"
       ];
